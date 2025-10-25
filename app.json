@@ -29,6 +29,7 @@
       [
         "@rnmapbox/maps",
         {
+          "RNMapboxMapsImpl": "mapbox",
           "RNMapboxMapsDownloadToken": ""
         }
       ],
