@@ -12,6 +12,6 @@ export default function HomeScreen() {
 
 const styles = StyleSheet.create({
   container: {
-     flex: 1, // Le conteneur prend tout l’espace disponible de l’écran
+     flex: 1,
   },
 });
