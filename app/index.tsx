@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Map } from "../components/layout/Map";
+import  Map  from "../components/layout/Map";
 
 export default function HomeScreen() {
   return (

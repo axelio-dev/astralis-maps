@@ -1,12 +1,6 @@
-import Mapbox from "@rnmapbox/maps";
 import React from "react";
+import { MapView } from "@maplibre/maplibre-react-native";
 
-export function Map() {
-  return (
-    <Mapbox.MapView
-      style={{ flex: 1 }}
-      styleURL="/assets/styles/bright.json"  
-      // ✅ Style libre (bright) copié de "https://tiles.openfreemap.org/styles/bright", mais en version locale
-    />
-  );
+export default function Map() {
+  return <MapView style={{ flex: 1 }} mapStyle={require("../../assets/styles/bright.json")} />;
 }
