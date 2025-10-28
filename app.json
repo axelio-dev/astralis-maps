@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "astralis-maps",
+    "name": "Astralis Maps",
     "slug": "astralis-maps",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -25,29 +25,30 @@
       "favicon": "./assets/images/logo.png"
     },
     "plugins": [
-  "expo-router",
-  "@maplibre/maplibre-react-native",
-  [
-    "expo-splash-screen",
-    {
-      "image": "./assets/images/splash-icon.png",
-      "imageWidth": 200,
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff",
-      "dark": {
-        "backgroundColor": "#000000"
-      }
-    }
-  ]
-],
+      "expo-router",
+      "@maplibre/maplibre-react-native",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/logo.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
+    "router": {},
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "4a9179f1-92af-4775-90d9-64fdeb100f7f"
+        "projectId": "60520a89-ca06-4819-b2f7-54d2ae9d9e97"
       }
     }
   }
