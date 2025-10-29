@@ -1,57 +1,84 @@
-import { useState, useEffect } from 'react';
-import * as Location from 'expo-location'; // Import de toutes les fonctionnalitées du module expo-location
+import { useState, useEffect, useRef } from "react";
+import * as Location from "expo-location";
 
-interface LocationData {
-  latitude: number; // Latitude de la position GPS
-  longitude: number; // Longitude de la position GPS
-  accuracy?: number; // Précision de la position (optionnel)
+// Définition du type d'objet "location" renvoyé par le hooks
+export interface LocationData {
+  latitude: number;     // Latitude actuelle de l'utilisateur
+  longitude: number;    // Longitude actuelle de l'utilisateur
+  accuracy?: number;    // Précision de la position (en mètres)
+  timestamp?: number;   // Heure à laquelle la position a été enregistrée
 }
 
+// Hook principal
 export const useLocation = () => {
-  const [location, setLocation] = useState<LocationData | null>(null); // Stocke la position actuelle de l'utilisateur
-  const [error, setError] = useState<string | null>(null); // Stocke un message d'erreur si quelque chose ne va pas
-  const [loading, setLoading] = useState(true); // Indique si on est en train de récupérer la position
+  const [location, setLocation] = useState<LocationData | null>(null); // Position actuelle (ou null si pas encore connue)
+  const [error, setError] = useState<string | null>(null); // Message d'erreur si un truc se passe mal (permissions, GPS désactivé, etc.)
+  const [loading, setLoading] = useState(true); // Indique si on est encore en train de récupérer la première position
+
+  const subscriptionRef = useRef<Location.LocationSubscription | null>(null);  
 
   useEffect(() => {
-    let subscription: Location.LocationSubscription; // Variable pour stocker l'abonnement à la localisation
+    let mounted = true; // Pour éviter les mises à jour d'état après le démontage
 
     (async () => {
       try {
-        const { status } = await Location.requestForegroundPermissionsAsync(); // Demande la permission d'accéder à la localisation en avant-plan
-        if (status !== 'granted') { // Si la permission est refusée
-          setError('Permission refusée pour accéder à la localisation.');
+        // Demande pour accéder à la localisation
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== "granted") {
+          // Si refus, erreuur et on arrête tout
+          if (!mounted) return;
+          setError("Permission refusée pour accéder à la localisation.");
           setLoading(false);
           return;
         }
 
-        subscription = await Location.watchPositionAsync( // Commence à surveiller la position de l'utilisateur
+        // On récupère la position actuelle
+        const current = await Location.getCurrentPositionAsync({});
+        if (!mounted) return;
+        setLocation({
+          latitude: current.coords.latitude,
+          longitude: current.coords.longitude,
+          accuracy: current.coords.accuracy ?? undefined,
+          timestamp: current.timestamp ?? Date.now(),
+        });
+        setLoading(false);
+
+        // Démarrage le suivi continu de la position (GPS actif)
+        subscriptionRef.current = await Location.watchPositionAsync(
           {
-            accuracy: Location.Accuracy.High, // Haute précision
-            distanceInterval: 1, // Met à jour la position toutes les 1 mètres
+            accuracy: Location.Accuracy.High, // haute précision GPS
+            distanceInterval: 5, // Mise à jour tous les 5 mètres parcourus
+            // timeInterval: 1000, // (optionnel) Si update chaque seconde
           },
-          (loc) => { // Callback appelé à chaque mise à jour de la position
+          (loc) => {
+            // À chaque mise à jour, stockage la nouvelle position
+            if (!mounted) return;
             setLocation({
               latitude: loc.coords.latitude,
               longitude: loc.coords.longitude,
               accuracy: loc.coords.accuracy ?? undefined,
+              timestamp: loc.timestamp ?? Date.now(),
             });
-            setLoading(false); // La position a été récupérée, on arrête le chargement
           }
         );
-      } catch (err: unknown) { // Gestion des erreurs
-        if (err instanceof Error) { 
-          setError(err.message);
-        } else {
-          setError(String(err));
-        }
+      } catch (err: unknown) {
+        // Si une erreur se produit, renvoi de l'erreur
+        if (!mounted) return;
+        setError(err instanceof Error ? err.message : String(err));
         setLoading(false);
       }
     })();
 
+    //  Nettoyage à la fin : arrêt du suivi GPS
     return () => {
-      if (subscription) subscription.remove(); // Nettoyage de l'abonnement à la localisation lors du démontage du composant
+      mounted = false;
+      if (subscriptionRef.current) {
+        subscriptionRef.current.remove();
+        subscriptionRef.current = null;
+      }
     };
   }, []);
 
-  return { location, error, loading }; // Retourne la position, l'erreur éventuelle et l'état de chargement
+  // On renvoie les infos de localisation, l'erreur éventuelle et le statut de chargement
+  return { location, error, loading };
 };
