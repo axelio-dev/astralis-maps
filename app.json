@@ -1,8 +1,7 @@
 {
   "expo": {
-    "name": "Astralis Maps DEV",
+    "name": "Astralis Maps",
     "slug": "astralis-maps",
-    "owner": "vipev70274",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/logo.png",
@@ -19,7 +18,11 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.astralismaps"
+      "package": "com.anonymous.astralismaps",
+      "permissions": [
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION"
+      ]
     },
     "web": {
       "output": "static",
@@ -29,10 +32,10 @@
       "expo-router",
       [
         "expo-location",
-          {
-            "locationAlwaysAndWhenInUsePermission": "Cette app utilise la localisation pour afficher votre position sur la map."
-          }
-        ],
+        {
+          "locationAlwaysAndWhenInUsePermission": "Cette app utilise la localisation pour afficher votre position sur la map."
+        }
+      ],
       "@maplibre/maplibre-react-native",
       [
         "expo-splash-screen",
