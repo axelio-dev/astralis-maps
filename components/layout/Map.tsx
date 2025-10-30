@@ -11,7 +11,7 @@ export default function Map() {
   return (
     <MapView
       style={{ flex: 1 }} // La carte prends tout l'espace disponible
-      mapStyle={require("../../assets/styles/bright.json")} // Style de la carte
+      mapStyle={require("../../assets/styles/astralis.json")} // Style de la carte
     >
       {/* Composant Camera pour centrer et zoomer sur la position de l'utilisateur */}
       <Camera
