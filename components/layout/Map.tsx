@@ -1,30 +1,40 @@
-import React from "react"; 
-import { View } from "react-native";  // Import de View pour le style du point
-import { MapView, PointAnnotation, Camera } from "@maplibre/maplibre-react-native"; // Import des composants Maplibre
-import { useLocationService } from "../../contexts/LocationContext"; // Import du hook pour la localisation
+import { Camera, MapView, PointAnnotation, } from "@maplibre/maplibre-react-native";
+import React, { useEffect, useState } from "react";
+import { View } from "react-native";
+import { useLocationService } from "../../contexts/LocationContext";
 
 export default function Map() {
-  const { location, loading } = useLocationService(); // Récupération de la localisation et de l'état de chargement
+  const { location, loading } = useLocationService();
+  const [initialCameraDone, setInitialCameraDone] = useState(false);
 
-  if (loading || !location) return null; // Si la localisation est en cours de chargement ou absente, rien ne s'affiche
+  useEffect(() => {
+    if (location && !initialCameraDone) {
+      // Une fois que la localisation est dispo, attente légère (1seconde) avant de désactiver la caméra
+      const timer = setTimeout(() => setInitialCameraDone(true), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [location, initialCameraDone]);
+
+  if (loading || !location) return null;
 
   return (
     <MapView
-      style={{ flex: 1 }} // La carte prends tout l'espace disponible
-      mapStyle={require("../../assets/styles/astralis.json")} // Style de la carte
+      style={{ flex: 1 }}
+      mapStyle={require("../../assets/styles/astralis.json")}
     >
-      {/* Composant Camera pour centrer et zoomer sur la position de l'utilisateur */}
-      <Camera
-        centerCoordinate={[location.longitude, location.latitude]}
-        zoomLevel={15}
-      />
+      {/* Caméra affichée uniquement au démarrage de l'application*/}
+      {!initialCameraDone && (
+        <Camera
+          centerCoordinate={[location.longitude, location.latitude]}
+          zoomLevel={15}
+        />
+      )}
 
       {/* Point bleu pour afficher la position de l'utilisateur */}
       <PointAnnotation
         id="user-location"
         coordinate={[location.longitude, location.latitude]}
       >
-        {/* Style de la position de l'utilisateur */}
         <View
           style={{
             width: 12,
