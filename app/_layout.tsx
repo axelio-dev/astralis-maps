@@ -5,7 +5,7 @@ import { LocationProvider } from "../contexts/LocationContext";
 export default function Layout() {
   return (
     <LocationProvider>
-      <Stack />
+      <Stack screenOptions={{ headerShown: false }} />
     </LocationProvider>
   );
 }
