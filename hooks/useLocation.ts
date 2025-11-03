@@ -1,5 +1,5 @@
-import { useState, useEffect, useRef } from "react";
 import * as Location from "expo-location";
+import { useEffect, useRef, useState } from "react";
 
 // Définition du type d'objet "location" renvoyé par le hooks
 export interface LocationData {
@@ -47,7 +47,7 @@ export const useLocation = () => {
         subscriptionRef.current = await Location.watchPositionAsync(
           {
             accuracy: Location.Accuracy.High, // haute précision GPS
-            distanceInterval: 5, // Mise à jour tous les 5 mètres parcourus
+            distanceInterval: 2, // Mise à jour tous les 5 mètres parcourus
             // timeInterval: 1000, // (optionnel) Si update chaque seconde
           },
           (loc) => {
