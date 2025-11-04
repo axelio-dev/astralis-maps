@@ -1,6 +1,6 @@
 import { Camera, MapView, PointAnnotation, } from "@maplibre/maplibre-react-native";
 import React, { useEffect, useState } from "react";
-import { View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useLocationService } from "../../contexts/LocationContext";
 
 export default function Map() {
@@ -18,6 +18,7 @@ export default function Map() {
   if (loading || !location) return null;
 
   return (
+    <View style={{ flex: 1 }}>
     <MapView
       style={{ flex: 1 }}
       mapStyle={require("../../assets/styles/astralis.json")}
@@ -35,17 +36,39 @@ export default function Map() {
         id="user-location"
         coordinate={[location.longitude, location.latitude]}
       >
-        <View
-          style={{
-            width: 12,
-            height: 12,
-            borderRadius: 6,
-            backgroundColor: "blue",
-            borderColor: "white",
-            borderWidth: 2,
-          }}
-        />
+        <View style={styles.userLocation} />
       </PointAnnotation>
     </MapView>
+          <TouchableOpacity style={styles.recenterButton}>
+        <Text style={styles.buttonText}>📍</Text>
+      </TouchableOpacity>
+</View>
   );
 }
+
+const styles = StyleSheet.create({
+  userLocation: {
+    width: 12,
+    height: 12,
+    borderRadius: 6,
+    backgroundColor: "blue",
+    borderColor: "white",
+    borderWidth: 2,
+  },
+  recenterButton: {
+    position: "absolute",
+    bottom: 20,
+    right: 20,
+    backgroundColor: "white",
+    borderRadius: 25,
+    padding: 12,
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    shadowOffset: { width: 0, height: 2 },
+  },
+  buttonText: {
+    fontSize: 20,
+  },
+});
