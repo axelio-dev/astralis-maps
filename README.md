@@ -23,12 +23,12 @@ Contrairement aux services classiques, Astralis Map ne collecte aucune donnée p
 ---
 
 ## 🛠️ Technologies
-|   **Domaine**  |   **Technologie**   |
-|----------------|---------------------|
-| Application    | React Native        |
-| Framework      | Expo                |
-| Carte          | Mapbox              |
-| Style de carte | Bright (OpenFreeMap)|
+|   **Domaine**  |       **Technologie**      |
+|----------------|----------------------------|
+| Application    | React Native               |
+| Framework      | Expo                       |
+| Carte          | Maplibre                   |
+| Style de carte | Astralis (Basé sur Liberty)|
 
 ---
 
