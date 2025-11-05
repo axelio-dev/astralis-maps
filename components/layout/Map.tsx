@@ -1,6 +1,7 @@
 import { Camera, MapView, PointAnnotation, } from "@maplibre/maplibre-react-native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { MaterialIcons } from '@expo/vector-icons';
 import { useLocationService } from "../../contexts/LocationContext";
 
 export default function Map() {
@@ -39,9 +40,9 @@ export default function Map() {
         <View style={styles.userLocation} />
       </PointAnnotation>
     </MapView>
-      <TouchableOpacity style={styles.recenterButton}>
-        <Text style={styles.buttonText}>📍</Text>
-      </TouchableOpacity>
+    <TouchableOpacity style={styles.recenterButton}>
+      <MaterialIcons name="my-location" size={24} color="black" />
+    </TouchableOpacity>
 </View>
   );
 }
