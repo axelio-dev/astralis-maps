@@ -1,7 +1,7 @@
-import { Camera, MapView, PointAnnotation } from "@maplibre/maplibre-react-native";
-import React, { useEffect, useState, useRef } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
+import { Camera, MapView, PointAnnotation } from "@maplibre/maplibre-react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useLocationService } from "../../contexts/LocationContext";
 
 export default function Map() {
