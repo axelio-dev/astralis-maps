@@ -39,7 +39,7 @@ export default function Map() {
         <View style={styles.userLocation} />
       </PointAnnotation>
     </MapView>
-          <TouchableOpacity style={styles.recenterButton}>
+        <TouchableOpacity style={styles.recenterButton}>
         <Text style={styles.buttonText}>📍</Text>
       </TouchableOpacity>
 </View>

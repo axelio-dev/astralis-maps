@@ -11,8 +11,12 @@
     "lint": "expo lint"
   },
   "dependencies": {
+    "@emotion/react": "^11.14.0",
+    "@emotion/styled": "^11.14.1",
     "@expo/vector-icons": "^15.0.2",
     "@maplibre/maplibre-react-native": "^10.4.0",
+    "@mui/icons-material": "^7.3.5",
+    "@mui/material": "^7.3.5",
     "@react-navigation/bottom-tabs": "^7.4.0",
     "@react-navigation/elements": "^2.6.3",
     "@react-navigation/native": "^7.1.18",
