@@ -1,49 +1,61 @@
-import { Camera, MapView, PointAnnotation, } from "@maplibre/maplibre-react-native";
-import React, { useEffect, useState } from "react";
+import { Camera, MapView, PointAnnotation } from "@maplibre/maplibre-react-native";
+import React, { useEffect, useState, useRef } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 import { useLocationService } from "../../contexts/LocationContext";
 
 export default function Map() {
   const { location, loading } = useLocationService();
-  const [initialCameraDone, setInitialCameraDone] = useState(false);
+  const [cameraProps, setCameraProps] = useState<{ centerCoordinate: [number, number]; zoomLevel: number } | null>(null);  // État pour les props de la caméra
 
   useEffect(() => {
-    if (location && !initialCameraDone) {
-      // Une fois que la localisation est dispo, attente légère (1seconde) avant de désactiver la caméra
-      const timer = setTimeout(() => setInitialCameraDone(true), 1000);
-      return () => clearTimeout(timer);
+    if (location && !cameraProps) {
+      // Définit la caméra initiale une fois la localisation disponible
+      setCameraProps({
+        centerCoordinate: [location.longitude, location.latitude],
+        zoomLevel: 15,
+      });
     }
-  }, [location, initialCameraDone]);
+  }, [location, cameraProps]);
 
-  if (loading || !location) return null;
+  if (loading || !location || !cameraProps) return null;
+
+  // Fonction pour recentrer la carte sur la position de l'utilisateur
+  const handleRecenter = () => {
+    setCameraProps({
+      centerCoordinate: [location.longitude, location.latitude],
+      zoomLevel: 15,
+    });
+  };
 
   return (
     <View style={{ flex: 1 }}>
-    <MapView
-      style={{ flex: 1 }}
-      mapStyle={require("../../assets/styles/astralis.json")}
-    >
-      {/* Caméra affichée uniquement au démarrage de l'application*/}
-      {!initialCameraDone && (
-        <Camera
-          centerCoordinate={[location.longitude, location.latitude]}
-          zoomLevel={15}
-        />
-      )}
-
-      {/* Point bleu pour afficher la position de l'utilisateur */}
-      <PointAnnotation
-        id="user-location"
-        coordinate={[location.longitude, location.latitude]}
+      <MapView
+        style={{ flex: 1 }}
+        mapStyle={require("../../assets/styles/astralis.json")}
       >
-        <View style={styles.userLocation} />
-      </PointAnnotation>
-    </MapView>
-    <TouchableOpacity style={styles.recenterButton}>
-      <MaterialIcons name="my-location" size={24} color="black" />
-    </TouchableOpacity>
-</View>
+        {/* Caméra toujours présente, contrôlée par l'état */}
+        <Camera
+          centerCoordinate={cameraProps.centerCoordinate}
+          zoomLevel={cameraProps.zoomLevel}
+          animationDuration={1000}  // Animation fluide pour le recentrage
+        />
+
+        {/* Point bleu pour afficher la position de l'utilisateur */}
+        <PointAnnotation
+          id="user-location"
+          coordinate={[location.longitude, location.latitude]}
+        >
+          <View style={styles.userLocation} />
+        </PointAnnotation>
+      </MapView>
+      <TouchableOpacity
+        style={styles.recenterButton}
+        onPress={handleRecenter}  // Gestionnaire onPress
+      >
+        <MaterialIcons name="my-location" size={24} color="blue" />
+      </TouchableOpacity>
+    </View>
   );
 }
 
