@@ -1,12 +1,13 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, } from "react-native";
+import { SafeAreaView } from 'react-native-safe-area-context';
 import  Map  from "../components/layout/Map";
 
 export default function HomeScreen() {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container} edges={['top', 'bottom']}>
       <Map />
-    </View>
+    </SafeAreaView>
   );
 }
 
