@@ -12,30 +12,30 @@ export default function Map() {
   } | null>(null);
 
   const mapRef = useRef<any>(null);
-  const cameraRef = useRef<any>(null); // Crée une ref pour la caméra
+  const cameraRef = useRef<any>(null); 
 
-  useEffect(() => { // Met à jour les props de la caméra lorsque la location est disponible
+  useEffect(() => {
     if (location && !cameraProps) {
       setCameraProps({
         centerCoordinate: [location.longitude, location.latitude],
-        zoomLevel: 15,
+        zoomLevel: 16,
       });
     }
   }, [location, cameraProps]);
 
-  if (loading || !location || !cameraProps) return null; // Attends que la location et les props de la caméra soient disponibles, sinon, rend null
+  if (loading || !location || !cameraProps) return null;
 
-  const handleRecenter = () => { // Fonction pour recentrer la carte sur la position actuelle
-    cameraRef.current?.setCamera({ // Ttilise la ref de la caméra
+  const handleRecenter = () => {
+    cameraRef.current?.setCamera({
       centerCoordinate: [location.longitude, location.latitude],
-      zoomLevel: 15,
+      zoomLevel: 16,
       animationDuration: 1000,
     });
   };
 
-  const handleResetNorth = () => { // Fonction pour réinitialiser l'orientation de la carte vers le nord
+  const handleResetNorth = () => {
     cameraRef.current?.setCamera({
-      heading: 0, //  remet la carte orientée vers le nord
+      heading: 0, // ✅ remet la carte orientée vers le nord
       animationDuration: 1000,
     });
   };
@@ -49,7 +49,7 @@ export default function Map() {
         compassEnabled={false}
       >
         <Camera
-          ref={cameraRef} // Assigne la ref à la caméra
+          ref={cameraRef} // ✅ Attache la ref
           centerCoordinate={cameraProps.centerCoordinate}
           zoomLevel={cameraProps.zoomLevel}
           animationDuration={1000}
