@@ -47,6 +47,7 @@ export default function Map() {
         style={{ flex: 1 }}
         mapStyle={require("../../assets/styles/astralis.json")}
         compassEnabled={false}
+        attributionEnabled={false}
       >
         <Camera
           ref={cameraRef} // ✅ Attache la ref
