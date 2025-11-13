@@ -11,16 +11,11 @@ export default function Map() {
     zoomLevel: number;
   } | null>(null);
 
-  // Nouvel état pour gérer le suivi automatique
-  const [isFollowing, setIsFollowing] = useState(true); // Démarrage avec suivi actif
-
   const mapRef = useRef<any>(null);
-  const cameraRef = useRef<any>(null);
-  const programmaticTimeoutRef = useRef<NodeJS.Timeout | null>(null); // Ref pour le timeout
+  const cameraRef = useRef<any>(null); 
 
   useEffect(() => {
     if (location && !cameraProps) {
-      setProgrammaticChange(); // Marquer comme changement programmatique pour le centrage initial
       setCameraProps({
         centerCoordinate: [location.longitude, location.latitude],
         zoomLevel: 16,
@@ -28,60 +23,21 @@ export default function Map() {
     }
   }, [location, cameraProps]);
 
-  // Suivi automatique : mettre à jour la caméra si isFollowing est true et location change
-  useEffect(() => {
-    if (location && isFollowing && cameraRef.current) {
-      setProgrammaticChange(); // Marquer comme changement programmatique
-      cameraRef.current.setCamera({
-        centerCoordinate: [location.longitude, location.latitude],
-        zoomLevel: 16,
-        animationDuration: 1000,
-      });
-    }
-  }, [location, isFollowing]);
-
-  // Fonction pour marquer un changement programmatique et set un timeout pour le reset
-  const setProgrammaticChange = () => {
-    if (programmaticTimeoutRef.current) {
-      clearTimeout(programmaticTimeoutRef.current);
-    }
-    programmaticTimeoutRef.current = setTimeout(() => {
-      programmaticTimeoutRef.current = null; // Reset après l'animation (1500ms > 1000ms animation)
-    }, 1500);
-  };
-
   if (loading || !location || !cameraProps) return null;
 
   const handleRecenter = () => {
-    if (isFollowing) {
-      // Si suivi actif, désactiver le suivi
-      setIsFollowing(false);
-    } else {
-      // Si inactif, activer le suivi et recentrer
-      setIsFollowing(true);
-      setProgrammaticChange(); // Marquer comme changement programmatique
-      cameraRef.current?.setCamera({
-        centerCoordinate: [location.longitude, location.latitude],
-        zoomLevel: 16,
-        animationDuration: 1000,
-      });
-    }
-  };
-
-  const handleResetNorth = () => {
-    setProgrammaticChange(); // Marquer comme changement programmatique
     cameraRef.current?.setCamera({
-      heading: 0, // ✅ remet la carte orientée vers le nord
+      centerCoordinate: [location.longitude, location.latitude],
+      zoomLevel: 16,
       animationDuration: 1000,
     });
   };
 
-  // Gestionnaire pour détecter les mouvements de la carte par l'utilisateur
-  const handleRegionDidChange = () => {
-    if (!programmaticTimeoutRef.current) {
-      // Si pas de timeout actif, c'est un geste utilisateur : désactiver le suivi
-      setIsFollowing(false);
-    }
+  const handleResetNorth = () => {
+    cameraRef.current?.setCamera({
+      heading: 0, // ✅ remet la carte orientée vers le nord
+      animationDuration: 1000,
+    });
   };
 
   return (
@@ -92,7 +48,6 @@ export default function Map() {
         mapStyle={require("../../assets/styles/astralis.json")}
         compassEnabled={false}
         attributionEnabled={false}
-        onRegionDidChange={handleRegionDidChange} // ✅ Détecte les mouvements utilisateur
       >
         <Camera
           ref={cameraRef} // ✅ Attache la ref
@@ -109,11 +64,8 @@ export default function Map() {
         </PointAnnotation>
       </MapView>
 
-      <TouchableOpacity 
-        style={[styles.recenterButton, { backgroundColor: isFollowing ? 'green' : 'blue' }]} // ✅ Couleur conditionnelle : vert si suivi actif, bleu sinon
-        onPress={handleRecenter}
-      >
-        <MaterialIcons name="my-location" size={24} color="white" />
+      <TouchableOpacity style={styles.recenterButton} onPress={handleRecenter}>
+        <MaterialIcons name="my-location" size={24} color="blue" />
       </TouchableOpacity>
 
       <TouchableOpacity style={styles.resetNorthButton} onPress={handleResetNorth}>
@@ -136,6 +88,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 20,
+    backgroundColor: "white",
     borderRadius: 25,
     padding: 12,
     elevation: 5,
