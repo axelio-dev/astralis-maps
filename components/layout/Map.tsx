@@ -6,24 +6,24 @@ import { useLocationService } from "../../contexts/LocationContext";
 
 export default function Map() {
   const { location, loading } = useLocationService();
-  const [cameraProps, setCameraProps] = useState<{
-    centerCoordinate: [number, number];
-    zoomLevel: number;
-  } | null>(null);
+  const [initialCameraSet, setInitialCameraSet] = useState(false); // ✅ Nouvel état pour contrôler le centrage initial
 
   const mapRef = useRef<any>(null);
   const cameraRef = useRef<any>(null); 
 
   useEffect(() => {
-    if (location && !cameraProps) {
-      setCameraProps({
+    // ✅ Centrage initial UNE SEULE FOIS au démarrage, quand location est disponible et la ref est prête
+    if (location && !initialCameraSet && cameraRef.current) {
+      cameraRef.current.setCamera({
         centerCoordinate: [location.longitude, location.latitude],
         zoomLevel: 16,
+        animationDuration: 1000,
       });
+      setInitialCameraSet(true); // ✅ Marque comme fait pour éviter les répétitions
     }
-  }, [location, cameraProps]);
+  }, [location, initialCameraSet]); // ✅ Dépendances : location et initialCameraSet
 
-  if (loading || !location || !cameraProps) return null;
+  if (loading || !location) return null; // ✅ Supprimé cameraProps de la condition, car on n'en a plus besoin
 
   const handleRecenter = () => {
     cameraRef.current?.setCamera({
@@ -50,10 +50,8 @@ export default function Map() {
         attributionEnabled={false}
       >
         <Camera
-          ref={cameraRef} // ✅ Attache la ref
-          centerCoordinate={cameraProps.centerCoordinate}
-          zoomLevel={cameraProps.zoomLevel}
-          animationDuration={1000}
+          ref={cameraRef} // ✅ Ref attachée, mais PAS de props centerCoordinate/zoomLevel pour éviter les conflits
+          // ✅ Supprimé : centerCoordinate et zoomLevel (plus de centrage automatique via props)
         />
 
         <PointAnnotation
@@ -75,6 +73,7 @@ export default function Map() {
   );
 }
 
+// Styles inchangés
 const styles = StyleSheet.create({
   userLocation: {
     width: 12,
