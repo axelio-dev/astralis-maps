@@ -1,79 +1,45 @@
 import { MaterialIcons } from '@expo/vector-icons';
-import { Camera, MapView, PointAnnotation } from "@maplibre/maplibre-react-native";
-import React, { useEffect, useRef, useState } from "react";
+import { MapView, PointAnnotation } from "@maplibre/maplibre-react-native";
+import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useLocationService } from "../../contexts/LocationContext";
 
 export default function Map() {
   const { location, loading } = useLocationService();
-  const [initialCameraSet, setInitialCameraSet] = useState(false); // ✅ Nouvel état pour contrôler le centrage initial
 
-  const mapRef = useRef<any>(null);
-  const cameraRef = useRef<any>(null); 
+  if (loading || !location) {
+    return null; // Or return a <Text>Loading...</Text> or spinner
+  }
 
-  useEffect(() => {
-    // ✅ Centrage initial UNE SEULE FOIS au démarrage, quand location est disponible et la ref est prête
-    if (location && !initialCameraSet && cameraRef.current) {
-      cameraRef.current.setCamera({
-        centerCoordinate: [location.longitude, location.latitude],
-        zoomLevel: 16,
-        animationDuration: 1000,
-      });
-      setInitialCameraSet(true); // ✅ Marque comme fait pour éviter les répétitions
-    }
-  }, [location, initialCameraSet]); // ✅ Dépendances : location et initialCameraSet
-
-  if (loading || !location) return null; // ✅ Supprimé cameraProps de la condition, car on n'en a plus besoin
-
-  const handleRecenter = () => {
-    cameraRef.current?.setCamera({
-      centerCoordinate: [location.longitude, location.latitude],
-      zoomLevel: 16,
-      animationDuration: 1000,
-    });
-  };
-
-  const handleResetNorth = () => {
-    cameraRef.current?.setCamera({
-      heading: 0, // ✅ remet la carte orientée vers le nord
-      animationDuration: 1000,
-    });
-  };
 
   return (
     <View style={{ flex: 1 }}>
       <MapView
-        ref={mapRef}
         style={{ flex: 1 }}
         mapStyle={require("../../assets/styles/astralis.json")}
         compassEnabled={false}
         attributionEnabled={false}
       >
-        <Camera
-          ref={cameraRef} // ✅ Ref attachée, mais PAS de props centerCoordinate/zoomLevel pour éviter les conflits
-          // ✅ Supprimé : centerCoordinate et zoomLevel (plus de centrage automatique via props)
-        />
-
         <PointAnnotation
           id="user-location"
-          coordinate={[location.longitude, location.latitude]}
+          coordinate={[location.longitude, location.latitude]} // Safe now, since we checked !location above
         >
           <View style={styles.userLocation} />
         </PointAnnotation>
       </MapView>
 
-      <TouchableOpacity style={styles.recenterButton} onPress={handleRecenter}>
+      <TouchableOpacity style={styles.recenterButton}>
         <MaterialIcons name="my-location" size={24} color="blue" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.resetNorthButton} onPress={handleResetNorth}>
+      <TouchableOpacity style={styles.resetNorthButton}>
         <MaterialIcons name="explore" size={24} color="black" />
       </TouchableOpacity>
     </View>
   );
 }
 
-// Styles inchangés
+// Styles (unchanged)
 const styles = StyleSheet.create({
   userLocation: {
     width: 12,
