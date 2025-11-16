@@ -8,9 +8,8 @@ export default function Map() {
   const { location, loading } = useLocationService();
 
   if (loading || !location) {
-    return null; // Or return a <Text>Loading...</Text> or spinner
+    return null; 
   }
-
 
   return (
     <View style={{ flex: 1 }}>
@@ -22,7 +21,7 @@ export default function Map() {
       >
         <PointAnnotation
           id="user-location"
-          coordinate={[location.longitude, location.latitude]} // Safe now, since we checked !location above
+          coordinate={[location.longitude, location.latitude]}
         >
           <View style={styles.userLocation} />
         </PointAnnotation>
@@ -39,7 +38,7 @@ export default function Map() {
   );
 }
 
-// Styles (unchanged)
+// Styles
 const styles = StyleSheet.create({
   userLocation: {
     width: 12,
