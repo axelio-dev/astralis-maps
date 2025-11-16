@@ -10,6 +10,18 @@ export default function Map() {
   if (loading || !location) {
     return null; 
   }
+  
+  useEffect() => {
+    
+  }
+
+  const handleRecenter = () => {
+    // Recentrer sur la position de l'utilisateur
+  }
+
+  const handleResetNorth = () => {
+    // Réinitialiser l'orientation de la carte vers le nord
+  }
 
   return (
     <View style={{ flex: 1 }}>
