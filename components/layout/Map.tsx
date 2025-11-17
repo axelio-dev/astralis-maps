@@ -15,13 +15,18 @@ export default function Map() {
     mapRef.current?.setCamera({
       centerCoordinate: [location.longitude, location.latitude],
       zoomLevel: 16,
-      animationDuration: 500, // animation fluide
+      animationDuration: 500,
     });
   };
 
+  // Remettre la carte "droite" (Vers le Nord)
   const handleResetNorth = () => {
-    // Réinitialiser l'orientation de la carte vers le nord
-  }
+    mapRef.current?.setCamera({
+      bearing: 0,
+      animationDuration: 500, 
+    });
+  };
+
 
   return (
     <View style={{ flex: 1 }}>
@@ -46,7 +51,7 @@ export default function Map() {
         <MaterialIcons name="my-location" size={24} color="blue" />
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.resetNorthButton}>
+      <TouchableOpacity style={styles.resetNorthButton} onPress={handleResetNorth}>
         <MaterialIcons name="explore" size={24} color="black" />
       </TouchableOpacity>
     </View>
