@@ -1,23 +1,23 @@
 import { MaterialIcons } from '@expo/vector-icons';
 import { MapView, PointAnnotation } from "@maplibre/maplibre-react-native";
-import React from "react";
+import React, { useRef } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { useLocationService } from "../../contexts/LocationContext";
 
 export default function Map() {
   const { location, loading } = useLocationService();
+  const mapRef = useRef(null); 
 
-  if (loading || !location) {
-    return null; 
-  }
-  
-  useEffect() => {
-    
-  }
+  if (loading || !location) return null;
 
+  // Recentrer la carte sur la position actuelle
   const handleRecenter = () => {
-    // Recentrer sur la position de l'utilisateur
-  }
+    mapRef.current?.setCamera({
+      centerCoordinate: [location.longitude, location.latitude],
+      zoomLevel: 16,
+      animationDuration: 500, // animation fluide
+    });
+  };
 
   const handleResetNorth = () => {
     // Réinitialiser l'orientation de la carte vers le nord
@@ -26,11 +26,13 @@ export default function Map() {
   return (
     <View style={{ flex: 1 }}>
       <MapView
+        ref={mapRef}
         style={{ flex: 1 }}
         mapStyle={require("../../assets/styles/astralis.json")}
         compassEnabled={false}
         attributionEnabled={false}
       >
+        {/* Point de l’utilisateur */}
         <PointAnnotation
           id="user-location"
           coordinate={[location.longitude, location.latitude]}
@@ -39,7 +41,8 @@ export default function Map() {
         </PointAnnotation>
       </MapView>
 
-      <TouchableOpacity style={styles.recenterButton}>
+      {/* Bouton de recentrage */}
+      <TouchableOpacity style={styles.recenterButton} onPress={handleRecenter}>
         <MaterialIcons name="my-location" size={24} color="blue" />
       </TouchableOpacity>
 
@@ -50,7 +53,6 @@ export default function Map() {
   );
 }
 
-// Styles
 const styles = StyleSheet.create({
   userLocation: {
     width: 12,
