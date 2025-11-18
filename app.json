@@ -4,7 +4,7 @@
     "slug": "astralis-maps",
     "version": "1.0.0",
     "orientation": "portrait",
-    "owner": "tipiho5446",
+    "owner": "axelio-dev",
     "icon": "./assets/images/logo.png",
     "scheme": "astralismaps",
     "userInterfaceStyle": "automatic",
@@ -59,7 +59,7 @@
     "extra": {
       "router": {},
       "eas": {
-        "projectId": "d919fdec-6be7-4456-9dc8-e04c6d84984f"
+        "projectId": "dbd4f98f-fa92-4cd8-9c99-7268317eab4f"
       }
     }
   }
