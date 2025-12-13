@@ -43,6 +43,13 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
-    }
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "850912cc-8e72-4b49-80fd-4ea1bf01514f"
+      }
+    },
+    "owner": "axelio-dev"
   }
 }
