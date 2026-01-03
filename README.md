@@ -1,50 +1,54 @@
-# Welcome to your Expo app 👋
+# Astralis Maps
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Astralis Maps is a Google Maps-style application that respects user privacy:  
+**no data is collected**, **everything is stored on the user's device**, and the project is **open-source**.
 
-## Get started
+## Technologies Used
 
-1. Install dependencies
+This application uses:  
+- [Expo](https://expo.dev) for cross-platform development  
+- [MapLibre](https://maplibre.org/) for map rendering  
+- A **custom map style**  
 
-   ```bash
-   npm install
-   ```
+## Getting Started
 
-2. Start the app
+To run the project locally:  
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+1. Install dependencies 
+```bash 
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+2. Start the application  
+```bash
+npx expo start
+```
 
-## Learn more
+You can then open the app on:  
+- a development build  
+- an Android emulator  
+- an iOS simulator  
+- [Expo Go](https://expo.dev/go)  
 
-To learn more about developing your project with Expo, look at the following resources:
+## Project Structure
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Development mainly happens in the **app** folder, using [file-based routing](https://docs.expo.dev/router/introduction).
 
-## Join the community
+### Resetting the Project
 
-Join our community of developers creating universal apps.
+To start fresh while keeping the starter code:  
+npm run reset-project
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+The original starter code will be moved to the **app-example** folder.
+
+## Resources
+
+- [Expo Documentation](https://docs.expo.dev/)  
+- [Learn Expo Tutorial](https://docs.expo.dev/tutorial/introduction/)  
+- [Expo Discord Community](https://chat.expo.dev)  
+- [Expo GitHub](https://github.com/expo/expo)  
+
+---
+
+⚠️ **Project Status:**  
+Development is currently **on hold indefinitely** due to lack of knowledge to continue.
